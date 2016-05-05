@@ -20,6 +20,7 @@
     Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim Originalfile As String
         Originalfile = OpenFileDialog1.FileName.ToString()
+        Dim looppoint As String = TextBox2.Text
         If soundtype = "stereo" Then
             hpsvars = " -y -i """ + Originalfile + """ -ar 32000 -acodec pcm_s16le -map_channel 0.0.0 LEFT.wav -ar 32000 -acodec pcm_s16le -map_channel 0.0.1 RIGHT.wav"
         End If
@@ -45,12 +46,12 @@
             dspright.WaitForExit()
         End Using
         Using d2hmake As New Process
-                d2hmake.StartInfo.Arguments = "--left_dsp LEFT.dsp --right_dsp RIGHT.dsp -o """ + Originalfile + ".hps"" --loop_point" + TextBox2.Text
-                d2hmake.StartInfo.FileName = progdir + "\tool\dsp2hps.exe"
-                d2hmake.Start()
-                d2hmake.WaitForExit()
-            End Using
-            IO.File.Delete(progdir + "\tool\left.wav")
+            d2hmake.StartInfo.Arguments = "--left_dsp LEFT.dsp --right_dsp RIGHT.dsp -o """ + Originalfile + ".hps"" --loop_point " + looppoint
+            d2hmake.StartInfo.FileName = progdir + "\tool\dsp2hps.exe"
+            d2hmake.Start()
+            d2hmake.WaitForExit()
+        End Using
+        IO.File.Delete(progdir + "\tool\left.wav")
         IO.File.Delete(progdir + "\tool\right.wav")
         IO.File.Delete(progdir + "\tool\left.dsp")
         IO.File.Delete(progdir + "\tool\right.dsp")
